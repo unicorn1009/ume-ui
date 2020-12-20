@@ -3,7 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
     <div>
-      <button @click="handleClick">{{btnName}}</button>
+      <el-button type="primary" @click="handleClick">{{btnName}}</el-button>
     </div>
   </div>
   <router-view/>
