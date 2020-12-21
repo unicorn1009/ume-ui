@@ -1,12 +1,12 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-    <div>
-      <el-button type="primary" @click="handleClick">{{btnName}}</el-button>
-    </div>
-  </div>
-  <router-view/>
+  <el-container>
+    <el-header>
+      <NavHeader></NavHeader>
+    </el-header>
+    <el-main><div class="main-div"></div></el-main>
+    <el-footer>Footer</el-footer>
+  </el-container>
+
 </template>
 
 <style>
@@ -18,28 +18,42 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
+.el-header, .el-footer {
+    
+    text-align: center;
+    line-height: 60px;
+  }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+    .el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+  }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .main-div { 
+    height: 500px;
+  }
+  
+  body > .el-container {
+    margin-bottom: 40px;
+  }
+
+
 </style>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
+import NavHeader from './components/NavHeader.vue'
+
 export default defineComponent({
   name: 'App',
   data(){
     return {
       btnName: '点我'
     }
+  },
+  components:{
+    NavHeader
   },
   
   methods: {
