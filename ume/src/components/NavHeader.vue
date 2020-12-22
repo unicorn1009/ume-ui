@@ -11,7 +11,6 @@
       <div class="grid-content">
         <el-input
           placeholder="请输入内容"
-          v-model="input3"
           class="input-with-select"
           ><template #append>
             <el-button icon="el-icon-search"></el-button>

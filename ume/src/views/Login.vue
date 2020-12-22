@@ -43,6 +43,10 @@
 </template>
  
 <script>
+import axios from "axios";
+import { ElMessage } from "element-plus";
+axios.defaults.baseURL = process.env.API_ROOT || "//localhost:8080";
+
 export default {
   name: "Login",
   data() {
@@ -72,18 +76,40 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-          this.$router.push("/home");
+          axios
+            .post("/login", this.form)
+            .then((response) => {
+              if (response.data.code === 20000) {
+                // 登陆成功
+                this.$router.push("/home");
+              } else {
+                // 登录失败
+                ElMessage.warning({
+                  message: "账号或密码错误",
+                  type: "warning",
+                });
+              }
+            })
+            .catch((error) => {
+              ElMessage(`未知错误:${error.data}`);
+            });
+          // this.$router.push("/home");
         } else {
+          // 前端表单验证失败
+          ElMessage("登录失败");
+
           return false;
         }
       });
     },
     onRegister(formName) {
+      ElMessage("注册暂不可用");
+
       // 为表单绑定验证功能
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-        //   this.$router.push("/main");
+          //   this.$router.push("/main");
         } else {
           return false;
         }
