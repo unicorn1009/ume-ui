@@ -24,13 +24,14 @@
         <el-button icon="el-icon-user-solid" circle></el-button>
         <el-link class="head-link" :underline="false">个人中心</el-link>
         <el-link class="head-link" :underline="false">消息</el-link>
-        <el-button type="primary" icon="el-icon-switch-button">退出</el-button>
+        <el-button type="primary" icon="el-icon-switch-button">创建房间</el-button>
       </div>
+
     </el-col>
   </el-row>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "NavHeader",
@@ -47,10 +48,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .head-right > * {
   margin: auto 10px;
   padding: 5px;
 }
+
 .head-right .head-link {
   height: 36px;
 }
