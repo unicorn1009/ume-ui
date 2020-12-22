@@ -1,14 +1,14 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="8">
-      <div class="grid-content bg-purple">
+      <div class="grid-content">
         <el-button round icon="el-icon-s-home">主页</el-button>
         <el-button round>看个电影</el-button>
         <el-button round>K个歌</el-button>
       </div>
     </el-col>
     <el-col :span="8">
-      <div class="grid-content bg-purple">
+      <div class="grid-content">
         <el-input
           placeholder="请输入内容"
           v-model="input3"
@@ -20,11 +20,11 @@
       </div>
     </el-col>
     <el-col :span="8">
-        <div class="grid-content bg-purple">
+        <div class="grid-content">
             <el-avatar class="avatar" shape="square" :size="30" :src="squareUrl"></el-avatar>
             <el-link :underline="false">个人中心</el-link>
             <el-link :underline="false">消息</el-link>
-            <el-button type="primary" icon="el-icon-arrow-left">退出</el-button>
+            <el-button type="primary">创建房间</el-button>
         </div>
     </el-col>
   </el-row>
@@ -44,9 +44,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.avatar{
-    margin: 10 auto;
-}
+
 .el-row {
   margin-bottom: 20px;
   &:last-child {

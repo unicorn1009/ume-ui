@@ -3,10 +3,13 @@
     <el-header>
       <NavHeader></NavHeader>
     </el-header>
-    <el-main><div class="main-div"></div></el-main>
+    <el-main>
+      <div class="main-div">
+        <!-- <video autoplay ref="player"></video> -->
+      </div>
+    </el-main>
     <el-footer>Footer</el-footer>
   </el-container>
-
 </template>
 
 <style>
@@ -18,48 +21,61 @@
   color: #2c3e50;
 }
 
-.el-header, .el-footer {
-    
-    text-align: center;
-    line-height: 60px;
-  }
+video {
+  width: 800px;
+  height: 600px;
+}
 
-    .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-  }
+.el-header{
+  line-height: 36px;
+}
+.el-footer {
+  text-align: center;
+  line-height: 60px;
+}
 
-  .main-div { 
-    height: 500px;
-  }
-  
-  body > .el-container {
-    margin-bottom: 40px;
-  }
+.el-main {
 
+  text-align: center;
+}
 
+.main-div {
+  height: 800px;
+}
+
+body > .el-container {
+  margin-bottom: 40px;
+}
 </style>
 
-<script lang="ts">
-import {defineComponent} from 'vue'
-import NavHeader from './components/NavHeader.vue'
+<script lang='ts'>
+import { defineComponent } from "vue";
+import NavHeader from "./components/NavHeader.vue";
 
 export default defineComponent({
-  name: 'App',
-  data(){
+  name: "App",
+  data() {
     return {
-      btnName: '点我'
-    }
+      btnName: "点我",
+    };
   },
-  components:{
-    NavHeader
+  components: {
+    NavHeader,
   },
-  
+  mounted() {
+    // this._init();
+  },
   methods: {
-    handleClick(){
-      console.log("Hello world")
-    }
-  }
-})
+    handleClick() {
+      console.log("Hello world");
+    },
+    async _init() {
+      let vs = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      this.$refs.player.srcObject = vs;
+    },
+  },
+});
 </script>
