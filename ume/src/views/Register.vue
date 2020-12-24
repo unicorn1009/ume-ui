@@ -7,12 +7,19 @@
       label-width="80px"
       class="login-box"
     >
-      <h3 class="login-title">欢迎登录</h3>
-      <el-form-item label="账号" prop="username">
+      <h3 class="login-title">欢迎注册</h3>
+      <el-form-item label="用户名" prop="username">
         <el-input
           type="text"
-          placeholder="请输入用户名或手机号"
+          placeholder="请输入用户名"
           v-model="form.username"
+        />
+      </el-form-item>
+      <el-form-item label="手机号" prop="phoneNumber">
+        <el-input
+          type="text"
+          placeholder="请输入手机号"
+          v-model="form.phoneNumber"
         />
       </el-form-item>
       <el-form-item label="密码" prop="password">
@@ -23,10 +30,10 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit('loginForm')"
-          >登录</el-button
+        <el-button @click="goLogin">去登录</el-button>
+        <el-button type="primary" @click="onRegister('loginForm')"
+          >注册</el-button
         >
-        <el-button @click="goRegister">去注册</el-button>
       </el-form-item>
     </el-form>
 
@@ -48,11 +55,32 @@ import { ElMessage } from "element-plus";
 axios.defaults.baseURL = process.env.API_ROOT || "//localhost:8080";
 
 export default {
-  name: "Login",
+  name: "Register",
   data() {
+      // 自定义验证规则
+        checkPhoneNumber = (rule, value, callback) => {
+        const phoneRegex = /^1[34578]\d{9}$/;
+        if (value === '') {
+          callback(new Error('请输入手机号'));
+        } else if (!phoneRegex.test(value) {
+          callback(new Error('手机号码格式不正确！'));
+        } else {
+          callback();
+        }
+      };
+        checkPassword = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else if (value !== this.ruleForm.pass) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      }
     return {
       form: {
         username: "",
+        phoneNumber: "",
         password: "",
       },
 
@@ -61,31 +89,43 @@ export default {
         username: [
           { required: true, message: "账号不可为空", trigger: "blur" },
         ],
+        phoneNumber: [
+          { required: true, message: "手机号不可为空", trigger: "blur" },
+        ],
         password: [
           { required: true, message: "密码不可为空", trigger: "blur" },
         ],
       },
 
+      
+
       // 对话框显示和隐藏
       dialogVisible: false,
+      showLoginBtn: false,
     };
   },
   methods: {
-    onSubmit(formName) {
+    goLogin(){
+        this.$router.push('/login')
+    },
+
+    onRegister(formName) {
+    
       // 为表单绑定验证功能
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-          axios
-            .post("/login", this.form)
-            .then((response) => {
+          //   this.$router.push("/main");
+          axios.post('/register', this.form)
+          .then((response) => {
               if (response.data.code === 20000) {
-                // 登陆成功
-                this.$router.push("/home");
+                // 注册成功
+                ElMessage("注册成功！");
+                // this.$router.push("/home");
               } else {
-                // 登录失败
+                // 注册失败
                 ElMessage.warning({
-                  message: "账号或密码错误",
+                  message: response.data.message,
                   type: "warning",
                 });
               }
@@ -93,18 +133,12 @@ export default {
             .catch((error) => {
               ElMessage(`未知错误:${error.data}`);
             });
-          // this.$router.push("/home");
         } else {
-          // 前端表单验证失败
-          ElMessage("登录失败");
-
           return false;
         }
       });
     },
-    goRegister(){
-        this.$router.push("/register");
-    }
+
   },
 };
 </script>

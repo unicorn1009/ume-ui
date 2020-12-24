@@ -1,25 +1,24 @@
 <template>
   <div>
-      <div class="room-info">
-          房间号：<el-input class="roomNumberImput" placeholder="请输入房间号" v-model="roomNumber"></el-input><el-button class="connBtn" type="primary">连接</el-button>
-      </div>
+    <div class="room-info">
+      房间号：<el-input
+        class="roomNumberImput"
+        placeholder="请输入房间号"
+        v-model="roomNumber"
+      ></el-input
+      ><el-button class="connBtn" type="primary">连接</el-button>
+    </div>
     <div class="chatContent">
       <el-input
         type="textarea"
-        :rows="30"
+        :rows="20"
         placeholder="请输入内容"
         v-model="textarea"
       >
       </el-input>
     </div>
     <div class="inputContent">
-      <el-input
-      class="input-send-msg"
-        type="textarea"
-        autosize
-        placeholder="请输入内容"
-        v-model="input"
-      >
+      <el-input class="input-send-msg" type="textarea" autosize v-model="input">
       </el-input>
       <el-button class="sendMsgBtn" type="primary" round>发送</el-button>
     </div>
@@ -33,38 +32,37 @@ export default defineComponent({
   data() {
     return {
       textarea: "",
-      input:"",
-      roomNumber: 123456
+      input: "",
+      roomNumber: 123456,
     };
   },
 });
 </script>
 
 <style scoped>
-.roomNumberImput{
-    width: 200px;
-    margin: 0 10px;
+.roomNumberImput {
+  width: 100px;
+  margin: 0 10px;
 }
-.connBtn{
-    display: inline-block;
+.connBtn {
+  display: inline-block;
 }
-.room-info{
-    margin: 10px;
+.room-info {
+  margin: 10px;
 }
-.inputContent{
-    margin: 20px;
-    height: 60px;
+.inputContent {
+  margin: 20px 0px;
+  height: 60px;
 }
-.input-send-msg{
-    display: inline-block;
-    margin: auto 10px;
-    width: 320px;
-    height: 40px;
+.input-send-msg {
+  display: inline-block;
+  margin: auto 5px;
+  width: 150px;
+  height: 40px;
 }
-.sendMsgBtn{
-    display: inline-block;
-    height: 40px;
-    margin: auto 10px;
-
+.sendMsgBtn {
+  display: inline-block;
+  height: 40px;
+  margin: auto 5px;
 }
 </style>

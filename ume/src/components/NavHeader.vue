@@ -19,12 +19,13 @@
       </div>
     </el-col>
     <el-col :span="8">
-      <div class="grid-content head-right">
+      <!-- <div class="grid-content head-right">
         <el-button icon="el-icon-user-solid" circle></el-button>
         <el-link class="head-link" :underline="false">个人中心</el-link>
         <el-link class="head-link" :underline="false">消息</el-link>
         <el-button type="primary" icon="el-icon-switch-button">创建房间</el-button>
-      </div>
+      </div> -->
+      <NavHeadRight></NavHeadRight>
 
     </el-col>
   </el-row>
@@ -32,6 +33,8 @@
 
 <script>
 import { defineComponent } from "vue";
+import NavHeadRight from './NavHeadRight'
+
 export default defineComponent({
   name: "NavHeader",
   data() {
@@ -42,6 +45,9 @@ export default defineComponent({
         "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
     };
   },
+  components:{
+    NavHeadRight
+  }
 
 });
 </script>

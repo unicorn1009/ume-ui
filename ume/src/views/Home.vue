@@ -89,9 +89,6 @@ video {
   text-align: center;
 }
 
-.main-div {
-  height: 800px;
-}
 
 body > .el-container {
   margin-bottom: 40px;
