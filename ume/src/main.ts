@@ -8,4 +8,3 @@ import VueAxios from 'vue-axios'
 import 'element-plus/lib/theme-chalk/index.css';
 
 createApp(App).use(store).use(router).use(ElementPlus).use(VueAxios, axios).mount('#app')
-

@@ -50,31 +50,31 @@
 </template>
  
 <script>
-import axios from "axios";
+import { defineComponent } from "vue";
+import request from '../utils/request'
+import cookie from "js-cookie";
 import { ElMessage } from "element-plus";
-axios.defaults.baseURL = process.env.API_ROOT || "//localhost:8080";
 
-export default {
+export default defineComponent({
   name: "Register",
   data() {
-      // 自定义验证规则
-        checkPhoneNumber = (rule, value, callback) => {
-        const phoneRegex = /^1[34578]\d{9}$/;
+    var checkPhoneNumber = (rule, value, callback) => {
+      const phoneRegex = /^1[34578]\d{9}$/
         if (value === '') {
           callback(new Error('请输入手机号'));
-        } else if (!phoneRegex.test(value) {
-          callback(new Error('手机号码格式不正确！'));
+        } else if (!phoneRegex.test(value)) {
+          callback(new Error('手机号码格式不正确！'))
         } else {
           callback();
         }
       };
-        checkPassword = (rule, value, callback) => {
+      var checkPass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
-        } else if (value !== this.ruleForm.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
+          callback(new Error('请填写密码'))
+        } else if(value.length < 6){
+          callback(new Error('密码长度不少于6位'))
+        }else{
+          callback()
         }
       }
     return {
@@ -83,17 +83,16 @@ export default {
         phoneNumber: "",
         password: "",
       },
-
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
         username: [
           { required: true, message: "账号不可为空", trigger: "blur" },
         ],
         phoneNumber: [
-          { required: true, message: "手机号不可为空", trigger: "blur" },
+          { validator: checkPhoneNumber, trigger: "blur" },
         ],
         password: [
-          { required: true, message: "密码不可为空", trigger: "blur" },
+          { validator: checkPass, trigger: "blur" },
         ],
       },
 
@@ -104,7 +103,21 @@ export default {
       showLoginBtn: false,
     };
   },
+  created(){
+    this.isLogin()
+  },
   methods: {
+    isLogin() {
+      console.log("开始从cookie中获取用户信息");
+      // 从cookie中获取用户信息
+      let userStr = cookie.get("ume_user");
+      // json字符串转js对象
+      if (userStr) {
+        // 说明已登录
+        ElMessage("用户已登录, 跳转首页.");
+        this.$router.push('/')
+      }
+    },
     goLogin(){
         this.$router.push('/login')
     },
@@ -116,7 +129,7 @@ export default {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
           //   this.$router.push("/main");
-          axios.post('/register', this.form)
+          request.post('/register', this.form)
           .then((response) => {
               if (response.data.code === 20000) {
                 // 注册成功
@@ -140,7 +153,7 @@ export default {
     },
 
   },
-};
+})
 </script>
  
 <style lang="scss" scoped>

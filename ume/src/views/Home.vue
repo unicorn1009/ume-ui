@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <NavHeader></NavHeader>
+      <NavHeader :userInfo="userInfo"></NavHeader>
     </el-header>
     <el-main>
       <div class="main-div">
@@ -19,7 +19,12 @@
         </el-row>
       </div>
     </el-main>
-    <el-footer>Footer</el-footer>
+    <el-footer>
+      <div>
+        <div>用户名:{{userInfo.username}}</div>
+        <div>头像地址:{{userInfo.avatar}}</div>
+      </div>
+      </el-footer>
   </el-container>
 </template>
 
@@ -27,12 +32,21 @@
 import { defineComponent } from "vue";
 import NavHeader from "../components/NavHeader.vue";
 import ChatRoom from "../components/ChatRoom.vue";
+import cookie from "js-cookie";
 
 export default defineComponent({
   name: "Main",
   data() {
     return {
       btnName: "点我",
+      token: "",
+      userInfo: {
+        username: "",
+        age: "",
+        avater: "",
+        phoneNumber: "",
+        gender: "",
+      },
     };
   },
   components: {
@@ -43,7 +57,21 @@ export default defineComponent({
     // this._init();
     // this.$socket.emit('connection', 1)
   },
+  created() {
+    this.getUserInfo();
+  },
   methods: {
+    getUserInfo() {
+      console.log('开始从cookie中获取用户信息');
+      // 从cookie中获取用户信息
+      let userStr = cookie.get("ume_user");
+      // json字符串转js对象
+      
+      if (userStr) {
+        console.log("从cookie中获取到了用户信息");
+        this.userInfo = JSON.parse(userStr);
+      }
+    },
     handleClick() {
       console.log("Hello world");
     },
@@ -88,7 +116,6 @@ video {
 
   text-align: center;
 }
-
 
 body > .el-container {
   margin-bottom: 40px;

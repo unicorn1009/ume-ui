@@ -43,11 +43,12 @@
 </template>
  
 <script>
-import axios from "axios";
+import { defineComponent } from "vue";
 import { ElMessage } from "element-plus";
-axios.defaults.baseURL = process.env.API_ROOT || "//localhost:8080";
+import cookie from "js-cookie";
+import request from "../utils/request";
 
-export default {
+export default defineComponent({
   name: "Login",
   data() {
     return {
@@ -70,17 +71,40 @@ export default {
       dialogVisible: false,
     };
   },
+  created() {
+    this.isLogin();
+  },
   methods: {
+    isLogin() {
+      console.log("开始从cookie中获取用户信息");
+      // 从cookie中获取用户信息
+      let userStr = cookie.get("ume_user");
+      // json字符串转js对象
+      if (userStr) {
+        // 说明已登录
+        ElMessage("用户已登录, 跳转首页.");
+        this.$router.push('/')
+      }
+    },
     onSubmit(formName) {
       // 为表单绑定验证功能
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-          axios
+          request
             .post("/login", this.form)
             .then((response) => {
               if (response.data.code === 20000) {
                 // 登陆成功
+                // 拿到传回来的token字符串
+                let token = response.data.data.token;
+                // 将token放入cookie中
+                cookie.set("ume_token", token, { domin: "localhost" });
+                // 获取用户信息,并存入cookie
+                request.get("/um/user/getUserInfo").then((res) => {
+                  let userInfo = res.data.data.userInfo;
+                  cookie.set("ume_user", userInfo, { domin: "localhost" });
+                });
                 this.$router.push("/home");
               } else {
                 // 登录失败
@@ -102,11 +126,21 @@ export default {
         }
       });
     },
-    goRegister(){
-        this.$router.push("/register");
-    }
+    goRegister() {
+      this.$router.push("/register");
+    },
+    getUserInfo() {
+      request
+        .get("/user/getUserInfo")
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
   },
-};
+});
 </script>
  
 <style lang="scss" scoped>
